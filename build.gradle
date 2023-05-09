@@ -1,0 +1,28 @@
+plugins {
+  id 'application'
+}
+
+repositories{
+  mavenCentral()
+
+}
+
+java {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+mainClassName = 'BattleShip'
+
+
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'BattleShip'
+    }
+    archiveBaseName = 'BattleShip'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+customFatJar.dependsOn compileJava
